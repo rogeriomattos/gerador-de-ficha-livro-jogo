@@ -1,13 +1,13 @@
 import ListItem from "../ListItem";
 import * as S from "./styles";
+import templates from "@/data/books";
 
 const TemplatesList = () => {
   return (
     <S.List>
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
+      {templates.map((item) => (
+        <ListItem template={item} />
+      ))}
     </S.List>
   );
 };

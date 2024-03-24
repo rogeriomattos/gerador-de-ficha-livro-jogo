@@ -1,5 +1,5 @@
-import CreateTemplateButton from "../../components/CreateTemplateButton";
-import TemplatesList from "../../components/TemplatesList";
+import CreateTemplateButton from "@/components/CreateTemplateButton";
+import TemplatesList from "@/components/TemplatesList";
 
 const Home = () => {
   return (

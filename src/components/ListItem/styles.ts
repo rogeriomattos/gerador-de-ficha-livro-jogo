@@ -22,11 +22,13 @@ export const ListItem = styled.li`
   }
   button {
     grid-area: delete;
+    width: 100%;
   }
   button:first-of-type {
     grid-area: edit;
   }
-  button:last-of-type {
+  a:last-of-type {
     grid-area: play;
+    flex: 1;
   }
 `;

@@ -1,10 +1,18 @@
+import { Template } from "@/data/types";
 import * as S from "./styles";
+import { Link } from "react-router-dom";
 
-const ListItem = () => {
+type ListItemProps = {
+  template: Template;
+};
+
+const ListItem = ({ template }: ListItemProps) => {
   return (
     <S.ListItem>
-      <span>Sangue de Zumbis</span>
-      <button>Jogar</button>
+      <span>{template.title}</span>
+      <Link to={`playing/${template.key}`}>
+        <button>Jogar</button>
+      </Link>
       <button>Deletar</button>
       <button>Editar</button>
     </S.ListItem>
