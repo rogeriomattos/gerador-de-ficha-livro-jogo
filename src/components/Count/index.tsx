@@ -4,20 +4,26 @@ import * as S from "./styles";
 
 type CountProps = {
   defaultValue: number;
+  onChange: (value: number) => void;
 };
 
-const Count = ({ defaultValue }: CountProps) => {
+const Count = ({ defaultValue, onChange }: CountProps) => {
   const [value, setValue] = useState(defaultValue);
+
+  const handleValue = (v: number) => {
+    setValue(v);
+    onChange(v);
+  };
 
   return (
     <S.Container>
-      <FaMinus onClick={() => setValue(value - 1)} />
+      <FaMinus onClick={() => handleValue(value - 1)} />
       <input
         type="number"
         value={value}
-        onChange={(e) => setValue(parseInt(e.target.value))}
+        onChange={(e) => handleValue(parseInt(e.target.value))}
       />
-      <FaPlus onClick={() => setValue(value + 1)} />
+      <FaPlus onClick={() => handleValue(value + 1)} />
     </S.Container>
   );
 };

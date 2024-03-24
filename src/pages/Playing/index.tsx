@@ -1,34 +1,43 @@
+import { useState } from "react";
 import { redirect, useParams } from "react-router-dom";
 import * as S from "./styles";
 import Count from "@/components/Count";
-import { Template } from "@/data/types";
-import templateList from "@/data/books";
+import { getSavedGame, startNewGame, updateNumberValue } from "@/services";
 
 const Playing = () => {
+  const [updateKey, setUpdateKey] = useState(Date.now());
   const { key } = useParams();
+  const savedGame = getSavedGame(key);
+  const [game, setGame] = useState(savedGame ? savedGame : startNewGame(key));
 
-  const template: Template | undefined = templateList.find(
-    (item) => item.key === key
-  );
-
-  if (!template) {
+  if (game === undefined || key === undefined) {
     redirect("/");
     return null;
   }
 
+  const handleRestart = () => {
+    startNewGame(key);
+    setGame(startNewGame(key));
+    setUpdateKey(Date.now());
+  };
+  console.log({ game });
   return (
-    <S.Container>
-      <S.BookTitle>{template.title}</S.BookTitle>
+    <S.Container key={updateKey}>
+      <button onClick={handleRestart}>Restart</button>
+      <S.BookTitle>{game.title}</S.BookTitle>
       <S.NumberSections>
-        {template.numberSections.map((section) => (
-          <S.Section key={section.title}>
+        {game.numberSections.map((section) => (
+          <S.Section key={section.key}>
             <h2>{section.title}</h2>
-            <Count defaultValue={section.value} />
+            <Count
+              defaultValue={section.value}
+              onChange={(value) => updateNumberValue(key, section.key, value)}
+            />
           </S.Section>
         ))}
       </S.NumberSections>
-      {template.textSections.map((section) => (
-        <S.Section key={section.title}>
+      {game.textSections.map((section) => (
+        <S.Section key={section.key}>
           <h2>{section.title}</h2>
           {section.value.map((text) => (
             <p>
@@ -37,11 +46,11 @@ const Playing = () => {
           ))}
         </S.Section>
       ))}
-      {template.itemsSections.map((section) => (
-        <S.Section key={section.title}>
+      {game.itemsSections.map((section) => (
+        <S.Section key={section.key}>
           <h2>{section.title}</h2>
-          {section.value.map((item) => (
-            <p>
+          {section.value.map((item, index) => (
+            <p key={item.title + index}>
               <span>{item.title}</span>
               <span>{item.value}</span>
             </p>
